@@ -1,28 +1,51 @@
+version: '3.8'
+
 services:
   postgres:
-    image: postgres:16-alpine
-    container_name: greenhouse-postgres
-
+    image: postgres:16
+    container_name: greenhouse-db
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-greenhouse}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-greenhouse}
-      POSTGRES_DB: ${POSTGRES_DB:-greenhouse}
-
+      POSTGRES_USER: greenhouse
+      POSTGRES_PASSWORD: greenhouse_password
+      POSTGRES_DB: greenhouse
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
-
+      - "5432:5432"
     volumes:
-      - greenhouse_pgdata:/var/lib/postgresql/data
-
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U ${POSTGRES_USER:-greenhouse} -d ${POSTGRES_DB:-greenhouse}"
-        ]
+      test: ["CMD-SHELL", "pg_isready -U greenhouse -d greenhouse"]
       interval: 5s
       timeout: 5s
       retries: 5
 
+  backend:
+    build:
+      context: ./backend
+    container_name: greenhouse-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      DATABASE_URL: postgresql+psycopg://greenhouse:greenhouse_password@postgres:5432/greenhouse
+      API_HOST: "0.0.0.0"
+      API_PORT: 8000
+      CORS_ORIGINS: "http://localhost:5173"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: greenhouse-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
 volumes:
-  greenhouse_pgdata:
+  postgres_data:

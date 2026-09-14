@@ -1,0 +1,42 @@
+﻿import uuid
+from datetime import datetime
+from sqlalchemy import String, text
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import Mapped, mapped_column
+from .base import Base
+
+
+class DeviceRow(Base):
+    __tablename__ = "devices"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        server_default=text("gen_random_uuid()"),
+    )
+
+    device_type: Mapped[str] = mapped_column(String(64), nullable=False)
+
+    role: Mapped[str] = mapped_column(
+        String(32),
+        nullable=False,
+        default="sensor",
+        server_default=text("'sensor'"),
+    )
+
+    display_name: Mapped[str | None] = mapped_column(
+        String(128),
+        nullable=True,
+    )
+
+    default_config: Mapped[dict] = mapped_column(
+        JSONB,
+        nullable=False,
+        default=dict,
+        server_default=text("'{}'::jsonb"),
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        nullable=False,
+        server_default=text("now()"),
+    )

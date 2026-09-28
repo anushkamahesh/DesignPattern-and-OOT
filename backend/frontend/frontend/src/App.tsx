@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import LocationConfigWizard from './features/config/LocationConfigWizard'
-import SensorList from './features/sensors/SensorList'
 
 const REQUIRED_SECTIONS = [
   { id: 'sensors', name: 'Sensors', description: 'Monitor temperature, humidity, light, and soil moisture.' },
@@ -13,8 +11,6 @@ const REQUIRED_SECTIONS = [
 
 export default function App() {
   const [apiStatus, setApiStatus] = useState<'checking' | 'ok' | 'error'>('checking')
-  // Bumped whenever locations/zones change so the sensor zone pickers reload
-  const [configVersion, setConfigVersion] = useState(0)
 
   useEffect(() => {
     fetch('/api/health')
@@ -34,7 +30,7 @@ export default function App() {
           <span className="text-2xl">🌱</span>
           <h1 className="text-xl font-bold tracking-tight text-emerald-400">Smart Greenhouse</h1>
         </div>
-
+        
         <div className="flex items-center space-x-6">
           <span className="text-sm text-slate-400 font-medium">Home Dashboard</span>
           <div className="flex items-center space-x-2 text-sm font-medium bg-slate-800 px-3 py-1 rounded-full border border-slate-700">
@@ -93,13 +89,6 @@ export default function App() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Phase 4: configuration wizard + sensors with zone pickers.
-            Light panel so the light-themed components stay readable on the dark page. */}
-        <div className="w-full mt-12 space-y-8 rounded-xl bg-white p-6 text-gray-900 shadow-lg">
-          <LocationConfigWizard onChanged={() => setConfigVersion((v) => v + 1)} />
-          <SensorList refreshKey={configVersion} />
         </div>
       </main>
     </div>

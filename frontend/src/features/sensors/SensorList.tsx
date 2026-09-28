@@ -4,13 +4,16 @@ import {
   getSensors,
   type SensorDto,
 } from "../../services/api";
+import ZonePicker from "../config/ZonePicker";
+import { useZoneAssignments } from "../config/useZoneAssignments";
 
-export default function SensorList() {
+export default function SensorList({ refreshKey = 0 }: { refreshKey?: number }) {
   const [sensors, setSensors] = useState<SensorDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sensorType, setSensorType] = useState("moisture");
   const [displayName, setDisplayName] = useState("");
+  const { groups, zoneByDevice, reload } = useZoneAssignments(refreshKey);
 
   async function loadSensors() {
     try {
@@ -108,6 +111,15 @@ export default function SensorList() {
               <pre className="mt-2 rounded bg-gray-100 p-3 text-sm">
                 {JSON.stringify(sensor.default_config, null, 2)}
               </pre>
+
+              <div className="mt-3">
+                <ZonePicker
+                  deviceId={sensor.id}
+                  groups={groups}
+                  value={zoneByDevice[sensor.id] ?? null}
+                  onChanged={reload}
+                />
+              </div>
             </article>
           ))}
         </div>

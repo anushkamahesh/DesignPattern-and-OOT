@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from src.interfaces.api.locations import router as locations_router
 from src.interfaces.api.sensors import router as sensors_router
 
 app = FastAPI(title="Smart Greenhouse API")
@@ -13,6 +15,7 @@ app.add_middleware(
 )
 
 app.include_router(sensors_router)
+app.include_router(locations_router)
 
 
 @app.get("/health")

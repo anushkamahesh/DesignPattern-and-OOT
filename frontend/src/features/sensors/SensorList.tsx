@@ -6,6 +6,7 @@ import {
 } from "../../services/api";
 import ZonePicker from "../config/ZonePicker";
 import { useZoneAssignments } from "../config/useZoneAssignments";
+import SensorReadingPanel from "./SensorReadingPanel";
 
 export default function SensorList({ refreshKey = 0 }: { refreshKey?: number }) {
   const [sensors, setSensors] = useState<SensorDto[]>([]);
@@ -120,6 +121,8 @@ export default function SensorList({ refreshKey = 0 }: { refreshKey?: number }) 
                   onChanged={reload}
                 />
               </div>
+
+              <SensorReadingPanel deviceId={sensor.id} />
             </article>
           ))}
         </div>

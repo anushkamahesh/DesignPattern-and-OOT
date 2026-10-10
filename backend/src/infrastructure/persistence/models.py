@@ -113,3 +113,16 @@ class ReadingRow(Base):
     recorded_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
+
+class AutomationRuleRow(Base):
+    __tablename__ = "automation_rules"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    location_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("locations.id", ondelete="CASCADE"), nullable=False, unique=True
+    )
+    strategy_key: Mapped[str] = mapped_column(String(64), nullable=False)
+    parameters: Mapped[Optional[dict[str, Any]]] = mapped_column(JSONB, nullable=True)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )

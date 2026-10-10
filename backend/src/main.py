@@ -9,6 +9,7 @@ from src.application.readings.sampler import SimulationSampler
 from src.application.readings.service import ReadingIngest
 from src.infrastructure.persistence.reading_repository import ReadingRepository
 from src.infrastructure.persistence.session import SessionLocal
+from src.interfaces.api.automation import router as automation_router
 from src.interfaces.api.devices import router as devices_router
 from src.interfaces.api.locations import router as locations_router
 from src.interfaces.api.sensors import router as sensors_router
@@ -55,6 +56,7 @@ app.add_middleware(
 app.include_router(sensors_router)
 app.include_router(locations_router)
 app.include_router(devices_router)
+app.include_router(automation_router)
 
 
 @app.get("/health")

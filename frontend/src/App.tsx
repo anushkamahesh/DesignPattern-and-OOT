@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import LocationConfigWizard from './features/config/LocationConfigWizard'
 import SensorList from './features/sensors/SensorList'
+import StrategyPanel from './features/automation/StrategyPanel'
 
 const REQUIRED_SECTIONS = [
   { id: 'sensors', name: 'Sensors', description: 'Monitor temperature, humidity, light, and soil moisture.' },
@@ -100,6 +101,7 @@ export default function App() {
         <div className="w-full mt-12 space-y-8 rounded-xl bg-white p-6 text-gray-900 shadow-lg">
           <LocationConfigWizard onChanged={() => setConfigVersion((v) => v + 1)} />
           <SensorList refreshKey={configVersion} />
+          <StrategyPanel refreshKey={configVersion} />
         </div>
       </main>
     </div>

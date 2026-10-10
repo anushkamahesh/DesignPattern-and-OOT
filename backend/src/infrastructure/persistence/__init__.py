@@ -1,4 +1,5 @@
 from src.infrastructure.persistence.models import (
+    AutomationRuleRow,
     Base,
     DeviceRow,
     LocationRow,
@@ -6,4 +7,11 @@ from src.infrastructure.persistence.models import (
     ZoneRow,
 )
 
-__all__ = ["Base", "DeviceRow", "LocationRow", "ZoneRow", "ReadingRow"]
+__all__ = [
+    "Base",
+    "DeviceRow",
+    "LocationRow",
+    "ZoneRow",
+    "ReadingRow",
+    "AutomationRuleRow",
+]

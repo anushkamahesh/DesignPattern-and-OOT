@@ -52,5 +52,5 @@ class ReadingRepository:
         """Tracking-enabled devices; the sampler filters protocol == simulation
         itself, since that lives in the default_config JSON."""
         return self._session.scalars(
-            select(DeviceRow).where(DeviceRow.tracking_enabled.is_(True))
+            select(DeviceRow).where(DeviceRow.tracking_enabled.is_(True), DeviceRow.role == "sensor")
         ).all()

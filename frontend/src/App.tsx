@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import LocationConfigWizard from './features/config/LocationConfigWizard'
 import SensorList from './features/sensors/SensorList'
+import ActuatorPanel from './features/actuators/ActuatorPanel'
+import OverviewPanel from './features/overview/OverviewPanel'
 import StrategyPanel from './features/automation/StrategyPanel'
 
 const REQUIRED_SECTIONS = [
@@ -72,7 +74,7 @@ export default function App() {
 
         {/* 6 Stable Section Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          {REQUIRED_SECTIONS.map((section) => (
+          {REQUIRED_SECTIONS.filter((s) => s.id !== 'overview').map((section) => (
             <div
               key={section.id}
               id={section.id}
@@ -99,8 +101,10 @@ export default function App() {
         {/* Phase 4: configuration wizard + sensors with zone pickers.
             Light panel so the light-themed components stay readable on the dark page. */}
         <div className="w-full mt-12 space-y-8 rounded-xl bg-white p-6 text-gray-900 shadow-lg">
+          <div id="overview"><OverviewPanel refreshKey={configVersion} /></div>
           <LocationConfigWizard onChanged={() => setConfigVersion((v) => v + 1)} />
           <SensorList refreshKey={configVersion} />
+          <ActuatorPanel />
           <StrategyPanel refreshKey={configVersion} />
         </div>
       </main>

@@ -12,6 +12,8 @@ from src.infrastructure.persistence.session import SessionLocal
 from src.interfaces.api.automation import router as automation_router
 from src.interfaces.api.devices import router as devices_router
 from src.interfaces.api.locations import router as locations_router
+from src.interfaces.api.overview import router as overview_router
+from src.interfaces.api.actuators import router as actuators_router
 from src.interfaces.api.sensors import router as sensors_router
 
 # How often the background sampler checks for devices whose interval has
@@ -57,6 +59,8 @@ app.include_router(sensors_router)
 app.include_router(locations_router)
 app.include_router(devices_router)
 app.include_router(automation_router)
+app.include_router(overview_router)
+app.include_router(actuators_router)
 
 
 @app.get("/health")

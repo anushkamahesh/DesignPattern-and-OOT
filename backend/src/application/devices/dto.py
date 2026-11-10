@@ -1,7 +1,8 @@
-from typing import Optional
+from datetime import datetime
+from typing import Any, Optional
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ActuatorDto(BaseModel):
@@ -19,3 +20,17 @@ class ActuatorDto(BaseModel):
 
 class TransitionRequest(BaseModel):
     target: str
+
+
+class ApplyRequest(BaseModel):
+    command: str
+    payload: dict[str, Any] = Field(default_factory=dict)
+
+
+class ExecutionDto(BaseModel):
+    id: UUID
+    device_id: UUID
+    success: bool
+    policy_applied: list[str]
+    message: Optional[str] = None
+    created_at: datetime

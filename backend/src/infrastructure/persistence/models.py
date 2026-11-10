@@ -137,3 +137,21 @@ class ActuatorStateRow(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
+
+from sqlalchemy import Index, Text  # noqa: E402
+
+
+class ActuatorExecutionLogRow(Base):
+    __tablename__ = "actuator_execution_log"
+    __table_args__ = (Index("ix_actuator_execution_log_created_at", "created_at"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    device_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("devices.id", ondelete="CASCADE"), nullable=False
+    )
+    success: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    policy_applied: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    message: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )

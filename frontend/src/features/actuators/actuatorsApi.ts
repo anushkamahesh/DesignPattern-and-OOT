@@ -21,6 +21,15 @@ export interface Actuator {
   allowed_targets: string[];
 }
 
+export interface Execution {
+  id: string;
+  device_id: string;
+  success: boolean;
+  policy_applied: string[];
+  message: string | null;
+  created_at: string;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     headers: { "Content-Type": "application/json" },
@@ -45,4 +54,14 @@ export const transitionActuator = (deviceId: string, target: string) =>
   request<Actuator>(`/api/devices/${deviceId}/transition`, {
     method: "POST",
     body: JSON.stringify({ target }),
+  });
+
+export const listExecutions = (limit = 20) =>
+  request<Execution[]>(`/api/actuators/executions?limit=${limit}`);
+
+// Demo until Phase 10: apply a command through the decorated port.
+export const applyCommand = (deviceId: string, command: string) =>
+  request<Execution>(`/api/actuators/${deviceId}/apply`, {
+    method: "POST",
+    body: JSON.stringify({ command, payload: {} }),
   });

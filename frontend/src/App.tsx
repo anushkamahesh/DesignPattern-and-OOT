@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import LocationConfigWizard from './features/config/LocationConfigWizard'
 import SensorList from './features/sensors/SensorList'
 import ActuatorPanel from './features/actuators/ActuatorPanel'
+import ExecutionLog from './features/actuators/ExecutionLog'
 import OverviewPanel from './features/overview/OverviewPanel'
 import StrategyPanel from './features/automation/StrategyPanel'
 
@@ -105,6 +106,7 @@ export default function App() {
           <LocationConfigWizard onChanged={() => setConfigVersion((v) => v + 1)} />
           <SensorList refreshKey={configVersion} />
           <ActuatorPanel />
+          <ExecutionLog />
           <StrategyPanel refreshKey={configVersion} />
         </div>
       </main>

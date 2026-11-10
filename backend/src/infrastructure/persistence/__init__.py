@@ -1,4 +1,5 @@
 from src.infrastructure.persistence.models import (
+    ActuatorExecutionLogRow,
     ActuatorStateRow,
     AutomationRuleRow,
     Base,
@@ -16,4 +17,5 @@ __all__ = [
     "ReadingRow",
     "AutomationRuleRow",
     "ActuatorStateRow",
+    "ActuatorExecutionLogRow",
 ]
